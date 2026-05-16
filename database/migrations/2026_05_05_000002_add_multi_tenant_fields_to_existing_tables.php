@@ -12,27 +12,39 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('agency_id')->nullable()->after('id')->constrained()->nullOnDelete();
-        });
+        if (! Schema::hasColumn('users', 'agency_id')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->foreignId('agency_id')->nullable()->after('id')->constrained()->nullOnDelete();
+            });
+        }
 
-        DB::statement("ALTER TABLE users MODIFY role ENUM('super_admin','agency_owner','agent','client') NOT NULL DEFAULT 'agent'");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE users MODIFY role ENUM('super_admin','agency_owner','agent','client') NOT NULL DEFAULT 'agent'");
+        }
 
-        Schema::table('clients', function (Blueprint $table) {
-            $table->foreignId('agency_id')->nullable()->after('id')->constrained()->nullOnDelete();
-        });
+        if (! Schema::hasColumn('clients', 'agency_id')) {
+            Schema::table('clients', function (Blueprint $table) {
+                $table->foreignId('agency_id')->nullable()->after('id')->constrained()->nullOnDelete();
+            });
+        }
 
-        Schema::table('itineraries', function (Blueprint $table) {
-            $table->foreignId('agency_id')->nullable()->after('id')->constrained()->nullOnDelete();
-        });
+        if (! Schema::hasColumn('itineraries', 'agency_id')) {
+            Schema::table('itineraries', function (Blueprint $table) {
+                $table->foreignId('agency_id')->nullable()->after('id')->constrained()->nullOnDelete();
+            });
+        }
 
-        Schema::table('products', function (Blueprint $table) {
-            $table->foreignId('agency_id')->nullable()->after('id')->constrained()->nullOnDelete();
-        });
+        if (! Schema::hasColumn('products', 'agency_id')) {
+            Schema::table('products', function (Blueprint $table) {
+                $table->foreignId('agency_id')->nullable()->after('id')->constrained()->nullOnDelete();
+            });
+        }
 
-        Schema::table('itinerary_items', function (Blueprint $table) {
-            $table->foreignId('product_id')->nullable()->after('itinerary_day_id')->constrained()->nullOnDelete();
-        });
+        if (! Schema::hasColumn('itinerary_items', 'product_id')) {
+            Schema::table('itinerary_items', function (Blueprint $table) {
+                $table->foreignId('product_id')->nullable()->after('itinerary_day_id')->constrained()->nullOnDelete();
+            });
+        }
     }
 
     /**
@@ -60,6 +72,8 @@ return new class extends Migration
             $table->dropConstrainedForeignId('agency_id');
         });
 
-        DB::statement("ALTER TABLE users MODIFY role ENUM('admin','agent') NOT NULL DEFAULT 'agent'");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE users MODIFY role ENUM('admin','agent') NOT NULL DEFAULT 'agent'");
+        }
     }
 };
