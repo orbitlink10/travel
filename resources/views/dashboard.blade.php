@@ -2522,6 +2522,115 @@
             `;
         }
 
+        function renderCreatePersonalItinerary() {
+            setDashboardHeaderMode('detail');
+            setActiveDashboardSection('trip');
+            toggleContactActions(false);
+            homeDashboardCreateItineraryButton.classList.add('hidden');
+            homeDashboardTitle.innerHTML = `
+                <button type="button" class="js-personal-itinerary-back text-base text-[#078000] underline">&lsaquo; Back</button>
+                <span class="mx-4 text-slate-400">|</span>
+                <span class="text-[26px]">Personal itinerary</span>
+                <span class="mx-4 text-slate-400">|</span>
+                <span class="text-base text-[#078000]">Personal itineraries</span>
+                <span class="mx-3 text-slate-400">&rsaquo;</span>
+            `;
+            homeDashboardTitle.closest('header').querySelector('div:last-child').innerHTML = `
+                <span class="text-base text-[#625e78]">Regions: <span class="text-[#68b742]">${personalItineraryRegion}</span></span>
+                <button type="button" class="rounded-md border border-[#9690ad] bg-white px-7 py-3 text-sm font-semibold text-[#57546b] shadow-sm">Save</button>
+                <button type="button" class="rounded-md bg-[#9bd47f] px-7 py-3 text-sm font-semibold text-white shadow-sm">◉ Preview Classic <span class="ml-7">⌄</span></button>
+            `;
+            homeDashboardHero.className = 'space-y-0 bg-transparent p-0 shadow-none';
+            homeDashboardHero.innerHTML = `
+                <nav class="flex justify-center gap-10 border-b border-slate-300 bg-white px-8 py-6 text-base font-semibold text-[#6b6f73] shadow-sm">
+                    <span class="border-b-2 border-[#68b742] pb-4 text-[#68b742]">1. Itinerary Details</span>
+                    <span>2. Accommodation</span>
+                    <span>3. Route Builder</span>
+                    <span>4. Planner</span>
+                    <span>5. Review</span>
+                    <span>6. Additional Details</span>
+                </nav>
+
+                <main class="grid gap-8 bg-[#f5f5f5] p-7 xl:grid-cols-[0.9fr_1.15fr_0.65fr]">
+                    <section class="rounded-md border border-slate-300 bg-white shadow-sm">
+                        <header class="border-b border-slate-300 bg-[#e7e7e7] px-5 py-4 text-sm font-semibold text-[#6b6f73]">General details</header>
+                        <div class="space-y-3 p-5 text-sm">
+                            ${[
+                                ['Itinerary name *', ''],
+                                ['Client name', ''],
+                                ['Reference number', ''],
+                                ['Languages', 'English'],
+                                ['Client email', ''],
+                                ['Telephone', ''],
+                            ].map((field) => `
+                                <label class="grid grid-cols-[160px_1fr] items-center gap-4">
+                                    <span class="font-semibold text-[#6b6f73]">${field[0]}</span>
+                                    ${field[0] === 'Languages'
+                                        ? '<select class="h-10 rounded border border-slate-300 px-3"><option>English</option></select>'
+                                        : `<input class="h-10 rounded border border-slate-300 px-3" value="${field[1]}" />`}
+                                </label>
+                            `).join('')}
+                            <label class="grid grid-cols-[160px_1fr] items-center gap-4">
+                                <span class="font-semibold text-[#6b6f73]">Special interests</span>
+                                <span class="flex h-10 overflow-hidden rounded border border-slate-300">
+                                    <input class="min-w-0 flex-1 px-3" />
+                                    <button type="button" class="w-12 bg-[#68b742] text-white">⛶</button>
+                                </span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="min-h-[520px] rounded-md border border-slate-300 bg-white shadow-sm">
+                        <nav class="flex border-b border-slate-300 bg-[#e7e7e7] text-sm text-[#57546b]">
+                            <span class="border-r border-slate-300 bg-white px-6 py-4 font-semibold">Price</span>
+                            <span class="border-r border-slate-300 px-6 py-4">Price includes</span>
+                            <span class="border-r border-slate-300 px-6 py-4">Price excludes</span>
+                            <span class="px-6 py-4">T's and C's</span>
+                        </nav>
+                        <div class="min-h-[430px]"></div>
+                        <footer class="border-t border-slate-300 px-5 py-3 text-sm text-[#57546b]">B &nbsp; <strong>I</strong> &nbsp; <u>U</u> &nbsp; ≡ &nbsp; ••</footer>
+                    </section>
+
+                    <aside class="space-y-7">
+                        <section class="rounded-md border border-slate-300 bg-white shadow-sm">
+                            <header class="flex justify-between border-b border-slate-300 bg-[#e7e7e7] px-5 py-4 text-sm font-semibold text-[#6b6f73]">
+                                <span>Appearance & branding</span>
+                                <span class="text-[#68b742]">SETUP OPTIONS</span>
+                            </header>
+                            <div class="space-y-5 p-5 text-sm">
+                                <label class="grid grid-cols-[120px_1fr] items-center gap-4">
+                                    <span class="font-semibold">Theme</span>
+                                    <select class="h-10 rounded border border-slate-300 px-3"><option>Default (Classic)</option></select>
+                                </label>
+                                <label class="flex items-center gap-3 font-semibold">Co-branding <input type="checkbox" /></label>
+                                <label class="grid grid-cols-[120px_1fr] items-center gap-4">
+                                    <span class="font-semibold">Branding</span>
+                                    <select class="h-10 rounded border border-slate-300 px-3"><option>reisen</option></select>
+                                </label>
+                            </div>
+                        </section>
+
+                        <section class="rounded-md border border-slate-300 bg-white shadow-sm">
+                            <header class="flex justify-between border-b border-slate-300 bg-[#e7e7e7] px-5 py-4 text-sm font-semibold text-[#6b6f73]">
+                                <span>Contact & enquiry</span>
+                                <span class="text-[#68b742]">SETUP OPTIONS</span>
+                            </header>
+                            <div class="space-y-5 p-5 text-sm">
+                                <label class="grid grid-cols-[120px_1fr] items-center gap-4">
+                                    <span class="font-semibold">Contact details</span>
+                                    <select class="h-10 rounded border border-slate-300 px-3"><option>Joy</option></select>
+                                </label>
+                                <label class="grid grid-cols-[120px_1fr] items-center gap-4">
+                                    <span class="font-semibold">Contact image</span>
+                                    <select class="h-10 rounded border border-slate-300 px-3"><option>Joy</option></select>
+                                </label>
+                            </div>
+                        </section>
+                    </aside>
+                </main>
+            `;
+        }
+
         function renderInitialContactIfNeeded() {
             if (!initialContactId) {
                 return;
@@ -2748,16 +2857,10 @@
             }
 
             if (event.target.closest('.js-create-personal-itinerary')) {
-                const nextNumber = personalItineraryRows.length + 1;
-                const today = new Date().toISOString().slice(0, 10).replaceAll('-', '/');
+                renderCreatePersonalItinerary();
+            }
 
-                personalItineraryRows.unshift([
-                    `New itinerary ${nextNumber}`,
-                    'English',
-                    today,
-                    '1',
-                    today,
-                ]);
+            if (event.target.closest('.js-personal-itinerary-back')) {
                 renderPersonalItineraries();
             }
 
